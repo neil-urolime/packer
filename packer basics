@@ -1,0 +1,39 @@
+Packer
+
+- used to build automated machine images
+- configuration file where build definitions is called template
+
+Installation:
+wget https://releases.hashicorp.com/packer/0.12.1/packer_0.12.1_linux_amd64.zip
+Unzip the downloaded zip file
+unzip packer_0.12.1_linux_amd64.zip
+cp packer /usr/local/bin/
+export PATH=$PATH:/usr/local/bin/packer
+packer -v
+
+
+- simple JSON is using for template creation
+{
+      "builders": [{
+     "type": "amazon-ebs",
+     "access_key": "",
+     "secret_key": "",
+     "region": "ca-central-1",
+     "source_ami": "ami-d29e25b6",
+     "instance_type": "t2.micro",
+     "ssh_username": "ec2-user",
+     "ami_name": "Base_Image_1.0.0"
+      }]
+ }
+
+
+If we do not give the access and secret key, they will use ~/.aws/credentials 
+First verify the json file using     packer validate test.json
+Ten build ami by    packer build test.json  
+
+While building the ami, an instance will create, test and terminated by default.
+The Packer Amazon Import post-processor takes an OVA(open virtualization archeive) artifact from various builders and imports it to an AMI available to Amazon Web Services EC2.The Packer Amazon Import post-processor takes an OVA artifact from various builders and imports it to an AMI available to Amazon Web Services EC2.
+https://www.packer.io/docs/post-processors/amazon-import.html#ami_users 
+
+
+Provisioners use builtin and third-party software to install and configure the machine image after booting. It is for installing packages, creating users, patching kernel
