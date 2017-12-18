@@ -1,0 +1,35 @@
+## Creating an ami from a base image and installing git ##
+
+
+{
+    "variables": {
+        "aws_access_key_id": "",
+        "aws_secret_access_key": "",
+        "ami_name_prefix": "NEIL",
+        "aws_region": "ca-central-1",
+        "aws_vpc_id": "vpc-296cad40",
+        "aws_subnet_id": "subnet-d7ef20be"
+    },
+
+
+"builders": [{
+    "type": "amazon-ebs",
+    "access_key": "{{user `aws_access_key`}}",
+    "secret_key": "{{user `aws_secret_key`}}",
+    "region": "{{user `aws_region`}}",
+    "source_ami": "ami-d29e25b6",
+    "associate_public_ip_address": true,
+    "vpc_id": "{{user `aws_vpc_id`}}",
+    "subnet_id": "{{user `aws_subnet_id`}}",
+    "instance_type": "t2.micro",
+    "ssh_username": "ec2-user",
+    "ami_name": "{{user `ami_name_prefix`}} {{timestamp}}"
+  }],
+
+"provisioners": [{
+   "type": "shell",
+   "inline": [
+     "sudo yum install -y git"
+    ]
+  }]
+}
